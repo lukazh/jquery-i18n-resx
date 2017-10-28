@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+   <HEAD>
+      <title>jQuery.i18n.resx: Demo</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta http-equiv="content-script-type" content="text/javascript" />
+		
+	  <!-- CSS -->	
+	  <style>
+	 	h1, h2, h3, h4, h5, h6 				{color:#777;}
+	 	label								{padding-right: 10px}
+	 	input[type="checkbox"], 
+	 	input[type="radio"],
+	 	input.checkbox,
+		input.radio 						{top: 0;}
+		:focus                              { -moz-outline-style: none; }
+		a									{color:#555}
+		.left                               {text-align: left; margin: 10px 20px;}
+		h4									{margin: 3px 10px; display: inline}
+		h3									{margin-top: 40px;}
+		xmp, code    					    {display:none; background-color: #eee;padding:3px; border: 1px solid #ddd; margin-left: 10px}
+		xmp.files, code.files				{display:none; width: 500px;}
+		xmp.i18n, code.i18n					{display:inline; margin: 0px;}
+		ul li								{margin-left: 10px}
+		a.toggle							{font-size: 10px;}
+		#langBox							{margin-left: 10px; margin-bottom: 10px;}
+	  </style>
+      
+	  <!-- JS -->
+	  <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+	  <script type="text/javascript" src="jquery.i18n.resx.js"></script>
+		
+      <script type="text/javascript">
+      	// load I18N bundles
+		jQuery(document).ready(function() {
+			loadBundles('zh');
+					
+			// configure language combo box
+			jQuery('#lang').change(function() {
+				var selection = jQuery('#lang option:selected').val();
+				loadBundles(selection != 'browser' ? selection : null);
+				jQuery('#langBrowser').empty();
+				if(selection == 'browser') {
+            		var lang = (navigator.languages && navigator.languages.length > 0) ? navigator.languages[0]
+                                        : (navigator.language || navigator.userLanguage /* IE */ || 'en');
+					jQuery('#langBrowser').text('('+ lang +')');
+				}
+			});
+			
+			// load files just for display purposes...
+			jQuery('#bundles h4').each(function() {
+				var file = 'bundles/' + jQuery(this).text();
+				var xmp = jQuery(this).next().next('xmp');
+				jQuery.get(file, function(data) {
+					xmp.html(data);
+				});
+			});
+			// ... and configure links to show/hide them
+			jQuery('a.toggle').bind('click', function() {
+			  jQuery(this).next('xmp').slideToggle();
+				return false;
+			});
+		});
+		
+		function loadBundles(lang) {
+			jQuery.i18n.resx({
+			    name:'Messages', 
+			    path:'bundles/', 
+			    mode:'both',
+				//debug: true,
+			    language:lang,
+			    callback: function() {
+			        updateExamples();
+			    }
+			});
+		}
+		
+		function updateExamples() {
+			// Accessing values through the map
+			var ex1 = 'msg_hello';
+			var ex2 = 'msg_complex'; var ex2P = 'John';
+			var ex3 = 'inexistent_key';
+            var ex4 = 'msg_multi_placeholder'; var ex4P1 = 'beautiful'; var ex4P2 = 'fishing';
+			var ex5 = '中文';
+			jQuery('#mapExamples')
+				.empty()
+				.append('<li><code class="i18n">$.i18n.res(\''+ex1+'\')</code>  -->  '+$.i18n.res(ex1)+'</li>')
+				.append('<li><code class="i18n">$.i18n.res(\''+ex2+'\',\''+ex2P+'\')</code>  -->  '+$.i18n.res(ex2, ex2P)+'</li>')
+				.append('<li><code class="i18n">$.i18n.res(\''+ex3+'\')</code>  -->  '+$.i18n.res(ex3)+'</li>')
+                .append('<li><code class="i18n">$.i18n.res(\''+ex4+'\',\''+ex4P1+'\',\''+ex4P2+'\')</code>  -->  '+$.i18n.res(ex4, ex4P1, ex4P2)+'</li>')
+				.append('<li><code class="i18n">$.i18n.res(\''+ex5+'\')</code>  -->  '+$.i18n.res(ex5)+'</li>');
+                
+		
+			// Accessing values through a JS variable
+			var ex21 = 'msg_hello';
+			var ex22 = 'msg_complex'; var ex22P = 'John'; 
+			var ex23 = 'inexistent_key';
+            var ex24 = 'msg_multi_placeholder'; var ex24P1 = 'beautiful'; var ex24P2 = 'fishing';
+			jQuery('#varExamples')
+				.empty()
+				.append('<li><code class="i18n">'+ex21+'</code>  -->  '+eval(ex21)+'</li>')
+				.append('<li><code class="i18n">'+ex22+'(\''+ex22P+'\')</code>  -->  '+eval(ex22+'(\''+ex22P+'\')')+'</li>')
+				.append('<li><code class="i18n">'+ex23+'</code>  -->  <small><i>(browser would report a missing JS symbol)</i></small></li>')
+				.append('<li><code class="i18n">'+ex24+'(\''+ex24P1+'\',\''+ex24P2+'\')</code>  -->  '+eval(ex24+'(\''+ex24P1+',' + ex24P2 + '\')')+'</li>');
+		}
+      </script>
+   </HEAD>
+   
+   <BODY>
+      <h2>jQuery.i18n.resx :: Demo</h2>
+      
+      <div class="left">
+        <h3>I18N Bundles</h3>
+		<div id="bundles">
+			<h4>Messages.resx</h4>
+			<a href="javascript:void(0);" class="toggle">[toggle contents]</a>
+			<xmp class="files"></xmp><br/>
+			
+			<h4>Messages.zh.resx</h4>
+			<a href="javascript:void(0);" class="toggle">[toggle contents]</a>
+			<xmp class="files"></xmp><br/>
+			
+			<h4>Messages.de-DE.resx</h4>
+			<a href="javascript:void(0);" class="toggle">[toggle contents]</a>
+			<xmp class="files"></xmp><p/><p/><p/>
+		</div>
+        
+        <h3>Examples</h3>
+        <div id="langBox">
+  	      Language:
+  	      <select id="lang">
+  			<option value="browser">Indicated by the browser</option>
+  			<option value="en">en</option>
+  			<option value="zh" selected>zh</option>
+  			<option value="de-DE">de-DE</option>
+  		  </select>
+  		  <span id="langBrowser"></span>
+  	    </div>
+        
+        <h4>Accessing values through the map</h4>
+        <ul id="mapExamples"></ul>
+        
+        <h4>Accessing values through a JS variable</h4>
+        <ul id="varExamples"></ul>
+
+        <h4>Tests</h4>
+        <ul id="tests">
+		  <li><a href="./tests/checkKeyNamespaceTest.html">CheckKeyNamespaceTest</a></li>
+		</ul>
+      </div>
+   </BODY>
+</HTML>

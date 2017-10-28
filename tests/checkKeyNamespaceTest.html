@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jQuery.i18n.resx: Tests</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="content-script-type" content="text/javascript" />
+
+        <!-- JS -->
+        <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="../jquery.i18n.resx.js"></script>
+
+        <!-- CSS -->	
+        <style>
+            h1, h2, h3, h4, h5, h6 				{color:#777;}
+            label								{padding-right: 10px}
+            input[type="checkbox"], 
+            input[type="radio"],
+            input.checkbox,
+            input.radio 						{top: 0;}
+            :focus                              { -moz-outline-style: none; }
+            a									{color:#555}
+            .left                               {text-align: left; margin: 10px 20px;}
+            h4									{margin: 3px 10px; display: inline}
+            h3									{margin-top: 40px;}
+            xmp, .code    					    {background-color: #eee;padding:3px; border: 1px solid #ddd; margin-left: 10px}
+            .code.i18n					        {display:inline; margin: 0px;}
+            ul li								{margin-left: 10px}
+            a.toggle							{font-size: 10px;}
+            #langBox							{margin-left: 10px; margin-bottom: 10px;}
+        </style>
+
+        <script type="text/javascript">
+            // load I18N bundles
+            jQuery(document).ready(function () {
+                var file = './Messages.resx';
+				jQuery.get(file, function(data) {
+					$("xmp").html(data);
+				});
+
+                jQuery.i18n.resx({
+                    name:'Messages',
+                    path:'./',
+                    mode:'both',
+                    //debug: true,
+                    callback: function () {
+                        var output = '';
+                        output += ((one.two.three ===  'blah') ? 'Test 1 Succeeded' : 'Test 1 Failed') + '<br/>';
+                        output += ((one.two.four ===  'blah1') ? 'Test 2 Succeeded' : 'Test 2 Failed') + '<br/>';
+                        output += ((one.three.three ===  'blah2') ? 'Test 3 Succeeded' : 'Test 3 Failed') + '<br/>';
+                        output += ((one.four.three ===  'blah3') ? 'Test 4 Succeeded' : 'Test 4 Failed') + '<br/>';
+                        output += ((one.five.three ===  'blah4') ? 'Test 5 Succeeded' : 'Test 5 Failed') + '<br/>';
+                        jQuery('.files').append(output);
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h2>jQuery.i18n.resx :: Tests</h2>
+
+        <h4>checkKeyNamespaceTest</h4>
+
+        <div class="left">
+            <h3>I18N Bundle</h3>
+                <xmp class="file"></xmp>
+            </div>
+        </div>
+        <div class="left">
+            <h3>Tests</h3>
+            <div class="code">
+                Test1: one.two.three ===  'blah'<br/>
+                Test2: one.two.four ===  'blah1'<br/>
+                Test3: one.three.three ===  'blah2'<br/>
+                Test4: one.four.three ===  'blah3'<br/>
+                Test5: one.five.three ===  'blah4'<br/>
+            </div>
+        </div>
+        <div class="left">
+            <h3>Results</h3>
+            <div class="code files"></code>
+        </div>
+        
+    </body>
+</htmL>

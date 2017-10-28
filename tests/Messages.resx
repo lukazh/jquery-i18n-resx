@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  ... some other tags ...
+  <data name="one.two.three" xml:space="preserve">
+    <value>blah</value>
+  </data>
+  <data name="one.two.four" xml:space="preserve">
+    <value>blah1</value>
+  </data>
+  <data name="one.three.three" xml:space="preserve">
+    <value>blah2</value>
+  </data>
+  <data name="one.four.three" xml:space="preserve">
+    <value>blah3</value>
+  </data>
+  <data name="one.five.three" xml:space="preserve">
+    <value>blah4</value>
+  </data>
+</root>

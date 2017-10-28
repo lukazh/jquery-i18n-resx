@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  ... some other tags ...
+  <data name="msg_hello" xml:space="preserve">
+    <value>Hello</value>
+  </data>
+  <data name="msg_complex" xml:space="preserve">
+    <value>Good morning {0}!
+This is a multi-line value :)</value>
+  </data>
+  <data name="msg_multi_placeholder" xml:space="preserve">
+    <value>It's a {0} day... let's go {1}?</value>
+  </data>
+  <data name="中文" xml:space="preserve">
+    <value>Chinese</value>
+  </data>
+</root>

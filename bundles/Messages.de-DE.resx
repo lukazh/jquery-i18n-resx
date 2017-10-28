@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  ... some other tags ...
+  <data name="msg_hello" xml:space="preserve">
+    <value>Hallo</value>
+  </data>
+  <data name="msg_complex" xml:space="preserve">
+    <value>Hallo {0}!</value>
+  </data>
+  <data name="中文" xml:space="preserve">
+    <value>Chinesisch</value>
+  </data>
+</root>

@@ -1,10 +1,9 @@
 /******************************************************************************
- * jquery.i18n.resx
+ * jQuery.i18n.resx
  *
- * Dual licensed under the GPL (http://dev.jquery.com/browser/trunk/jquery/GPL-LICENSE.txt) and
- * MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses.
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  *
- * @version     1.2.7
+ * @version     1.0.0
  * @url         https://github.com/lukazh/jquery-i18n-resx
  *
  *****************************************************************************/
@@ -27,7 +26,7 @@
      * Load and parse message bundle files (.resx),
      * making bundles keys available as javascript variables.
      *
-     * i18n files are named <name>.js, or <name>.<language>.js or <name>.<language>-<country>.js
+     * i18n files are named <name>.resx, or <name>.<language>.resx or <name>.<language>-<country>.resx
      * Where:
      *      The <language> argument is a valid ISO Language Code. These codes are the lower-case,
      *      two-letter codes as defined by ISO-639. You can find a full list of these codes at a
@@ -43,13 +42,13 @@
      *      path:      'bundles'
      * });
      * @param  name      (string/string[], optional) names of file to load (eg, 'Messages' or ['Msg1','Msg2']). Defaults to "Messages"
-     * @param  language    (string, optional) language/country code (eg, 'en', 'en-US', 'pt-BR'). if not specified, language reported by the browser will be used instead.
+     * @param  language  (string, optional) language/country code (eg, 'en', 'en-US', 'zh-CN'). if not specified, language reported by the browser will be used instead.
      * @param  path      (string, optional) path of directory that contains file to load
      * @param  mode      (string, optional) whether bundles keys are available as JavaScript variables/functions or as a map (eg, 'vars' or 'map')
      * @param  debug     (boolean, optional) whether debug statements are logged at the console
-     * @param  cache        (boolean, optional) whether bundles should be cached by the browser, or forcibly reloaded on each page load. Defaults to false (i.e. forcibly reloaded)
+     * @param  cache     (boolean, optional) whether bundles should be cached by the browser, or forcibly reloaded on each page load. Defaults to false (i.e. forcibly reloaded)
      * @param  encoding  (string, optional) the encoding to request for bundles. Resource bundles are specified to be in ISO-8859-1 format. Defaults to UTF-8 for backward compatibility.
-     * @param  callback     (function, optional) callback function to be called after script is terminated
+     * @param  callback  (function, optional) callback function to be called after script is terminated
      */
     $.i18n.resx = function (settings) {
 
@@ -149,29 +148,6 @@
         if (typeof(value) === 'undefined') {
             return (namespace) ? namespace + '#' + key : key;
         }
-
-        // Place holder replacement
-        /**
-        * Tested with:
-        *   test.t1=asdf ''{0}''
-        *   test.t2=asdf '{0}' '{1}'{1}'zxcv
-        *   test.t3=This is \"a quote" 'a''{0}''s'd{fgh{ij'
-        *   test.t4="'''{'0}''" {0}{a}
-        *   test.t5="'''{0}'''" {1}
-        *   test.t6=a {1} b {0} c
-        *   test.t7=a 'quoted \\ s\ttringy' \t\t x
-        *
-        * Produces:
-        *   test.t1, p1 ==> asdf 'p1'
-        *   test.t2, p1 ==> asdf {0} {1}{1}zxcv
-        *   test.t3, p1 ==> This is "a quote" a'{0}'sd{fgh{ij
-        *   test.t4, p1 ==> "'{0}'" p1{a}
-        *   test.t5, p1 ==> "'{0}'" {1}
-        *   test.t6, p1 ==> a {1} b p1 c
-        *   test.t6, p1, p2 ==> a p2 b p1 c
-        *   test.t6, p1, p2, p3 ==> a p2 b p1 c
-        *   test.t7 ==> a quoted \ s	tringy 		 x
-        */
 
         var i;
         if (typeof(value) === 'string') {
@@ -447,8 +423,8 @@
         var lang = settings.language;
         if (!lang || lang.length < 2) {
             if (settings.debug) debug('No language supplied. Pulling it from the browser ...');
-            lang = (navigator.languages && navigator.languages.length > 0) ? navigator.languages[0]
-                                        : (navigator.language || navigator.userLanguage /* IE */ || 'en');
+            lang = navigator.language || navigator.userLanguage 
+                    || ((navigator.languages && navigator.languages.length > 0) ? navigator.languages[0] : 'en');
             if (settings.debug) debug('Language from browser: ' + lang);
         }
 

@@ -30,8 +30,7 @@ Synchronous Ajax has now been deprecated and will be removed at some point in th
 1. Include it on your ``<head>`` section:
 
 ```html
-<script type="text/javascript" language="JavaScript"
-  src="js/jquery.i18n.resx-min.js"></script>
+<script type="text/javascript" language="JavaScript" src="js/jquery.i18n.resx-min.js"></script>
 ```
 
 2. Initialize the plugin (minimal usage, will use language reported by browser), and access a translated value (assuming a key named ‘org.somekey‘ exists, it will be setup as a variable you can use directly in your Javascript):
@@ -40,7 +39,13 @@ Synchronous Ajax has now been deprecated and will be removed at some point in th
 <script>
 	jQuery.i18n.resx({
   		name: 'Messages', 
-  		callback: function(){ alert( org.somekey ); }
+		path: 'bundles/', 
+		mode: 'both',
+		language: 'en-US',
+  		callback: function(){
+			var value = org.somekey; // or jQuery.i18n.res('org.somekey')
+			console.log(value); 
+		}
 	});
 </script>
 ```
@@ -51,12 +56,12 @@ Synchronous Ajax has now been deprecated and will be removed at some point in th
 Option | Description | Notes
 ------ | ----------- | -----
 **name**   | Partial name (or names) of files representing resource bundles (eg, ‘Messages’ or ['Msg1','Msg2']). Defaults to 'Messages' | Optional String or String[] |
-**language** | ISO-639 Language code and, optionally, ISO-3166 country code (eg, ‘en’, ‘en_US’, ‘pt_BR’). If not specified, language reported by the browser will be used instead. | Optional String |
+**language** | ISO-639 Language code and, optionally, ISO-3166 country code (eg, ‘en’, ‘en_US’, ‘zh_CN’). If not specified, language reported by the browser will be used instead. | Optional String |
 **path** | Path to directory that contains ‘.resx‘ files to load. | Optional String |
-**namespace** | The namespace that you want your keys to be stored under. You'd access these keys like this: $.i18n.map\[namespace\]\[key\]. Using a namespace minimises the chances of key clashes and overwrites. | Optional String |
-**mode** | Option to have resource bundle keys available as Javascript vars/functions OR as a map. The ‘map’ option is mandatory if your bundle keys contain Javascript Reserved Words. Possible options: ‘vars’ (default), ‘map’ or ‘both’. | Optional String |
-**debug** | Option to turn on console debug statement. Possible options: true or false. | Optional boolean |
-**cache** | Whether bundles should be cached by the browser, or forcibly reloaded on each page load. Defaults to false (i.e. forcibly reloaded). | Optional boolean |
+**namespace** | The namespace that you want your keys to be stored under. You'd access these keys like this: jQuery.i18n.map\[namespace\]\[key\]. Using a namespace minimises the chances of key clashes and overwrites. | Optional String |
+**mode** | Option to have resource bundle keys available as Javascript vars/functions OR as a map. The ‘map’ option is mandatory if your bundle keys contain Javascript Reserved Words. Possible options: ‘vars’, ‘map’ or ‘both’. Defaults to ‘vars’. | Optional String |
+**debug** | Option to turn on console debug statement. Defaults to true. | Optional boolean |
+**cache** | Whether bundles should be cached by the browser, or forcibly reloaded on each page load. Defaults to true. | Optional boolean |
 **encoding** | The encoding to request for bundles. Resource bundles are specified to be in ISO-8859-1 format. Defaults to UTF-8 for backward compatibility. | Optional String |
 **callback** | Callback function to be called uppon script execution completion. | Optional function() |
 

@@ -65,7 +65,7 @@
 		
 		function loadBundles(lang) {
 			jQuery.i18n.resx({
-			    name:'Messages', 
+			    name:['Messages','Tips'], 
 			    path:'bundles/', 
 			    mode:'both',
 				//debug: true,
@@ -83,13 +83,15 @@
 			var ex3 = 'inexistent_key';
             var ex4 = 'msg_multi_placeholder'; var ex4P1 = 'beautiful'; var ex4P2 = 'fishing';
 			var ex5 = '中文';
+			var ex6 = 'little_tip';
 			jQuery('#mapExamples')
 				.empty()
 				.append('<li><code class="i18n">$.i18n.res(\''+ex1+'\')</code>  -->  '+$.i18n.res(ex1)+'</li>')
 				.append('<li><code class="i18n">$.i18n.res(\''+ex2+'\',\''+ex2P+'\')</code>  -->  '+$.i18n.res(ex2, ex2P)+'</li>')
 				.append('<li><code class="i18n">$.i18n.res(\''+ex3+'\')</code>  -->  '+$.i18n.res(ex3)+'</li>')
                 .append('<li><code class="i18n">$.i18n.res(\''+ex4+'\',\''+ex4P1+'\',\''+ex4P2+'\')</code>  -->  '+$.i18n.res(ex4, ex4P1, ex4P2)+'</li>')
-				.append('<li><code class="i18n">$.i18n.res(\''+ex5+'\')</code>  -->  '+$.i18n.res(ex5)+'</li>');
+				.append('<li><code class="i18n">$.i18n.res(\''+ex5+'\')</code>  -->  '+$.i18n.res(ex5)+'</li>')
+				.append('<li><code class="i18n">$.i18n.res(\''+ex6+'\')</code>  -->  '+$.i18n.res(ex6)+'</li>');
                 
 		
 			// Accessing values through a JS variable
@@ -123,7 +125,13 @@
 			
 			<h4>Messages.de-DE.resx</h4>
 			<a href="javascript:void(0);" class="toggle">[toggle contents]</a>
-			<xmp class="files"></xmp><p/><p/><p/>
+			<xmp class="files"></xmp>
+			
+			<h4>Tips.en.resx</h4>
+			<a href="javascript:void(0);" class="toggle">[toggle contents]</a>
+			<xmp class="files"></xmp>
+			
+			<p/><p/>
 		</div>
         
         <h3>Examples</h3>

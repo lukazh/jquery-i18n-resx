@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  ... some other tags ...
+  <data name="little_tip" xml:space="preserve">
+    <value>You can load multiple files with a array for 'name'</value>
+  </data>
+</root>

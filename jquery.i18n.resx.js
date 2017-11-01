@@ -423,8 +423,10 @@
         var lang = settings.language;
         if (!lang || lang.length < 2) {
             if (settings.debug) debug('No language supplied. Pulling it from the browser ...');
-            lang = navigator.language || navigator.userLanguage 
-                    || ((navigator.languages && navigator.languages.length > 0) ? navigator.languages[0] : 'en');
+			/* Chrome will display pages in the language on the top of the user prefered language list,
+			   but itself in the selected one, which is a little confusing. */
+            lang = (navigator.languages && navigator.languages.length > 0) ? navigator.languages[0]
+                                        : (navigator.language || navigator.userLanguage || 'en');
             if (settings.debug) debug('Language from browser: ' + lang);
         }
 

@@ -18,7 +18,7 @@
      */
     $.i18n.map = {};
 
-    var debug = function (message) {
+    var log = function (message) {
         window.console && console.log('i18n::' + message);
     };
 
@@ -41,12 +41,15 @@
      *      language:  'en-US',
      *      path:      'bundles'
      * });
-     * @param  name      (string/string[], optional) names of file to load (eg, 'Messages' or ['Msg1','Msg2']). Defaults to "Messages"
+     * @param  name      (string/string[], optional) names of file to load (eg, 'Messages' or ['Msg1','Msg2']). Defaults to 'Messages'
      * @param  language  (string, optional) language/country code (eg, 'en', 'en-US', 'zh-CN'). if not specified, language reported by the browser will be used instead.
      * @param  path      (string, optional) path of directory that contains file to load
      * @param  mode      (string, optional) whether bundles keys are available as JavaScript variables/functions or as a map (eg, 'vars' or 'map')
+     * @param  load      (string/string[], optional) which files to load: file with no locale specification ('default'), with only language code ('language'), 
+     *                                              and with language-country code ('country'). Defaults to ['default','language','country']
+     * @param  ext       (string, optional) extension of files to load. In case one changes the 'resx' extension in order to avoiding web server restriction. Defaults to 'resx'
      * @param  debug     (boolean, optional) whether debug statements are logged at the console
-     * @param  cache     (boolean, optional) whether bundles should be cached by the browser, or forcibly reloaded on each page load. Defaults to false (i.e. forcibly reloaded)
+     * @param  cache     (boolean, optional) whether bundles should be cached by the browser, or forcibly reloaded on each page load. Defaults to true (i.e. forcibly reloaded)
      * @param  encoding  (string, optional) the encoding to request for bundles. Resource bundles are specified to be in ISO-8859-1 format. Defaults to UTF-8 for backward compatibility.
      * @param  callback  (function, optional) callback function to be called after script is terminated
      */
@@ -58,6 +61,8 @@
             path: '',
             namespace: null,
             mode: 'vars',
+            load: '',
+            ext: 'resx',
             cache: true,
             debug: false,
             encoding: 'UTF-8',
@@ -72,7 +77,7 @@
             if (settings.namespace.match(/^[a-z]*$/)) {
                 $.i18n.map[settings.namespace] = {};
             } else {
-                debug('Namespaces can only be lower case letters, a - z');
+                log('Namespaces can only be lower case letters, a - z');
                 settings.namespace = null;
             }
         }
@@ -83,33 +88,46 @@
         // Try to ensure that we have at a least a two letter language code
         settings.language = this.normaliseLanguageCode(settings);
 
+        // Ensure correct and an array
+        var loadAll = ['default','language','country'];
+        if(settings.load){
+            if(typeof(settings.load) === 'string') settings.load = [settings.load];
+            for(var i=0;i<settings.load.length;){
+                var item = settings.load[i];
+                if(loadAll.indexOf(item) === -1){
+                    log('err: unexpected setting for "load": ' + item);
+                    settings.load.splice(i, 1);
+                    continue;
+                }
+                i++;
+            }
+        }
+        if(!settings.load.length) {
+            settings.load = loadAll;
+        }
+
         // Ensure an array
-        var files = (settings.name && settings.name.constructor === Array) ? settings.name : [settings.name];
+        var files = (settings.name && $.isArray(settings.name)) ? settings.name : [settings.name];
 
         // A locale is at least a language code which means at least two files per name. If
         // we also have a country code, thats an extra file per name.
         settings.totalFiles = (files.length * 2) + ((settings.language.length >= 5) ? files.length : 0);
         if (settings.debug) {
-            debug('totalFiles: ' + settings.totalFiles);
+            log('totalFiles: ' + settings.totalFiles);
         }
 
         settings.filesLoaded = 0;
-
+        
         files.forEach(function (file) {
-
-            var defaultFileName, shortFileName, longFileName, fileNames;
-            // 1. load base (eg, Messages.resx)
-            defaultFileName = settings.path + file + '.resx';
-            // 2. with language code (eg, Messages.zh.resx)
-            var shortCode = settings.language.substring(0, 2);
-            shortFileName = settings.path + file + '.' + shortCode + '.resx';
-            // 3. with language code and country code (eg, Messages.zh-CN.resx)
-            if (settings.language.length >= 5) {
-                var longCode = settings.language.substring(0, 5);
-                longFileName = settings.path + file + '.' + longCode + '.resx';
-                fileNames = [defaultFileName, shortFileName, longFileName];
-            } else {
-                fileNames = [defaultFileName, shortFileName];
+            var fileNames = [];
+            if(settings.load.indexOf('default')){
+                fileNames.push(settings.path + file + '.' + settings.ext);
+            }
+            if(settings.load.indexOf('language')){
+                fileNames.push(settings.path + file + '.' + settings.language.substring(0, 2) + '.' + settings.ext);
+            }
+            if(settings.load.indexOf('country') && settings.language.length >= 5){
+                fileNames.push(settings.path + file + '.' + settings.language.substring(0, 5) + '.' + settings.ext);
             }
             loadAndParseFiles(fileNames, settings);
         });
@@ -224,9 +242,9 @@
     function callbackIfComplete(settings) {
 
         if (settings.debug) {
-            debug('callbackIfComplete()');
-            debug('totalFiles: ' + settings.totalFiles);
-            debug('filesLoaded: ' + settings.filesLoaded);
+            log('callbackIfComplete()');
+            log('totalFiles: ' + settings.totalFiles);
+            log('filesLoaded: ' + settings.filesLoaded);
         }
 
         if (settings.async) {
@@ -260,7 +278,7 @@
 
     function loadAndParseFiles(fileNames, settings) {
 
-        if (settings.debug) debug('loadAndParseFiles');
+        if (settings.debug) log('loadAndParseFiles');
 
 	    if (fileNames !== null && fileNames.length > 0) {
 		    loadAndParseFile(fileNames[0], settings, function () {
@@ -276,9 +294,9 @@
     function loadAndParseFile(filename, settings, nextFile) {
 
         if (settings.debug) {
-            debug('loadAndParseFile(\'' + filename +'\')');
-            debug('totalFiles: ' + settings.totalFiles);
-            debug('filesLoaded: ' + settings.filesLoaded);
+            log('loadAndParseFile(\'' + filename +'\')');
+            log('totalFiles: ' + settings.totalFiles);
+            log('filesLoaded: ' + settings.filesLoaded);
         }
 
   	    if (filename !== null && typeof filename !== 'undefined') {
@@ -290,8 +308,8 @@
                 success: function (data, status) {
 
                     if (settings.debug) {
-                        debug('Succeeded in downloading ' + filename + '.');
-                        debug(data);
+                        log('Succeeded in downloading ' + filename + '.');
+                        log(data);
                     }
 
                     parseData(data, settings);
@@ -300,7 +318,7 @@
                 error: function (jqXHR, textStatus, errorThrown) {
 
                     if (settings.debug) {
-                        debug('Failed to download or parse ' + filename + '. errorThrown: ' + errorThrown);
+                        log('Failed to download or parse ' + filename + '. errorThrown: ' + errorThrown);
                     }
                     if (jqXHR.status === 404) {
                         settings.totalFiles -= 1;
@@ -422,12 +440,12 @@
 
         var lang = settings.language;
         if (!lang || lang.length < 2) {
-            if (settings.debug) debug('No language supplied. Pulling it from the browser ...');
+            if (settings.debug) log('No language supplied. Pulling it from the browser ...');
 			/* Chrome will display pages in the language on the top of the user prefered language list,
 			   but itself in the selected one, which is a little confusing. */
             lang = (navigator.languages && navigator.languages.length > 0) ? navigator.languages[0]
                                         : (navigator.language || navigator.userLanguage || 'en');
-            if (settings.debug) debug('Language from browser: ' + lang);
+            if (settings.debug) log('Language from browser: ' + lang);
         }
 
         lang = lang.toLowerCase();

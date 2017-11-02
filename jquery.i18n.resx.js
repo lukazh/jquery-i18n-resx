@@ -184,7 +184,7 @@
                         if (!isNaN(index) && index >= 0) {
                             // Put the line thus far (if it isn't empty) into the array
                             var s = value.substring(0, i);
-                            if (s !== "") {
+                            if (s !== '') {
                                 arr.push(s);
                             }
                             // Put the parameter reference into the array
@@ -202,7 +202,7 @@
             } // while
 
             // Put the remainder of the no-empty line into the array.
-            if (value !== "") {
+            if (value !== '') {
                 arr.push(value);
             }
             value = arr;
@@ -216,15 +216,15 @@
         }
 
         if (value.length === 0) {
-            return "";
+            return '';
         }
-        if (value.length === 1 && typeof(value[0]) === "string") {
+        if (value.length === 1 && typeof(value[0]) === 'string') {
             return value[0];
         }
 
-        var str = "";
+        var str = '';
         for (i = 0, j = value.length; i < j; i++) {
-            if (typeof(value[i]) === "string") {
+            if (typeof(value[i]) === 'string') {
                 str += value[i];
             } else if (phvList && value[i] < phvList.length) {
                 // Must be a number
@@ -232,7 +232,7 @@
             } else if (!phvList && value[i] + 1 < args.length) {
                 str += args[value[i] + 1];
             } else {
-                str += "{" + value[i] + "}";
+                str += '{' + value[i] + '}';
             }
         }
 
@@ -260,8 +260,8 @@
         var xmlDoc = null;
         try //Internet Explorer
         {
-            xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-            xmlDoc.async="false";
+            xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
+            xmlDoc.async='false';
             xmlDoc.loadXML(text);
         }
         catch(e)
@@ -269,7 +269,7 @@
             try //Firefox, Mozilla, Opera, etc.
             {
                 parser = new DOMParser();
-                xmlDoc = parser.parseFromString(text,"text/xml");
+                xmlDoc = parser.parseFromString(text, 'text/xml');
             }
             catch(e) {}
         }
@@ -332,7 +332,7 @@
     /** Parse .resx files */
     function parseData(data, settings) {
         var xmlDoc = loadXML(data);
-        var items = xmlDoc.getElementsByTagName("data");
+        var items = xmlDoc.getElementsByTagName('data');
         var parsed = '';
         var regPlaceHolder = /(\{\d+})/g;
         var regRepPlaceHolder = /\{(\d+)}/g;
@@ -340,8 +340,8 @@
         var unicodeRE = /(\\u.{4})/ig;
         for (var i=0,l=items.length;i<l;i++) {
             var item = items[i];
-            var name = item.attributes["name"].value;
-            var value = item.getElementsByTagName("value")[0].textContent.trim();
+            var name = item.attributes['name'].value;
+            var value = item.getElementsByTagName('value')[0].textContent.trim();
 
             /** Mode: bundle keys in a map */
             if (settings.mode === 'map' || settings.mode === 'both') {
@@ -365,16 +365,16 @@
                 // Handle escape characters. Done separately from the tokenizing loop below because escape characters are
                 // active in quoted strings.
                 value = value.replace(regEscapeCharacters, function(match){
-                    if(match === "\"")
-                        return "\\\"";
-                    if(match === "\t")
-                        return "\\t";
-                    if(match === "\r")
-                        return "\\r";
-                    if(match === "\n")
-                        return "\\n";
-                    if(match === "\f")
-                        return "\\f";
+                    if(match === '\"')
+                        return '\\\"';
+                    if(match === '\t')
+                        return '\\t';
+                    if(match === '\r')
+                        return '\\r';
+                    if(match === '\n')
+                        return '\\n';
+                    if(match === '\f')
+                        return '\\f';
                 });
 
                 // make sure namespaced key exists (eg, 'some.key')
@@ -428,7 +428,7 @@
                 }
 
                 fullname += name;
-                if (eval('typeof ' + fullname + ' === "undefined"')) {
+                if (eval('typeof(' + fullname + ')==="undefined"')) {
                     eval(fullname + '={};');
                 }
             }
@@ -449,7 +449,7 @@
         }
 
         lang = lang.toLowerCase();
-        lang = lang.replace(/_/,"-");
+        lang = lang.replace(/_/,'-');
         if (lang.length > 3) {
             lang = lang.substring(0, 3) + lang.substring(3).toUpperCase();
         }

@@ -55,11 +55,11 @@ Synchronous Ajax has now been deprecated and will be removed at some point in th
 
 Option | Description | Notes
 ------ | ----------- | -----
-**name**   | Partial name (or names) of files representing resource bundles (eg, "Messages" or ['Msg1','Msg2']). Defaults to 'Messages' | Optional String or String[] |
-**language** | ISO-639 Language code and, optionally, ISO-3166 country code (eg, "en", "en_US", "zh_CN"). If not specified, language reported by the browser will be used instead. | Optional String |
-**path** | Path to directory that contains ".resx" files to load. | Optional String |
+**name**   | Partial name (or names) of files representing resource bundles (eg, 'Messages' or ['Msg1','Msg2']). Defaults to 'Messages' | Optional String or String[] |
+**language** | ISO-639 Language code and, optionally, ISO-3166 country code (eg, 'en', 'en_US', 'zh_CN'). If not specified, language reported by the browser will be used instead. | Optional String |
+**path** | Path to directory that contains resource files to load. | Optional String |
 **namespace** | The namespace that you want your keys to be stored under. You'd access these keys like this: jQuery.i18n.map\[namespace\]\[key\]. Using a namespace minimises the chances of key clashes and overwrites. | Optional String |
-**mode** | Option to have resource bundle keys available as Javascript vars/functions OR as a map. The "map" option is mandatory if your bundle keys contain Javascript Reserved Words. Possible options: "vars", "map" or "both". Defaults to "vars". | Optional String |
+**mode** | Option to have resource bundle keys available as Javascript vars/functions OR as a map. The 'map' option is mandatory if your bundle keys contain Javascript Reserved Words. Possible options: 'vars', 'map' or 'both'. Defaults to 'vars'. | Optional String |
 **load** | Option to determine which files to load: file with no locale specification ('default'), with only language code ('language'), and with language-country code ('country'). Defaults to ['default','language','country'] | Optional String |
 **ext** | Option to set the extension of files to load. Defaults to 'resx'. | Optional String |
 **debug** | Option to turn on console debug statement. Defaults to true. | Optional boolean |

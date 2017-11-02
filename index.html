@@ -29,7 +29,7 @@
       
 	  <!-- JS -->
 	  <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
-	  <script type="text/javascript" src="jquery.i18n.resx.js"></script>
+	  <script type="text/javascript" src="jquery.i18n.resx.min.js"></script>
 		
       <script type="text/javascript">
       	// load I18N bundles
@@ -97,13 +97,11 @@
 			var ex21 = 'msg_hello';
 			var ex22 = 'msg_complex'; var ex22P = 'John'; 
 			var ex23 = 'inexistent_key';
-            var ex24 = 'msg_multi_placeholder'; var ex24P1 = 'beautiful'; var ex24P2 = 'fishing';
 			jQuery('#varExamples')
 				.empty()
 				.append('<li><code class="i18n">'+ex21+'</code>  -->  '+eval(ex21)+'</li>')
 				.append('<li><code class="i18n">'+ex22+'(\''+ex22P+'\')</code>  -->  '+eval(ex22+'(\''+ex22P+'\')')+'</li>')
-				.append('<li><code class="i18n">'+ex23+'</code>  -->  <small><i>(browser would report a missing JS symbol)</i></small></li>')
-				.append('<li><code class="i18n">'+ex24+'(\''+ex24P1+'\',\''+ex24P2+'\')</code>  -->  '+eval(ex24+'(\''+ex24P1+',' + ex24P2 + '\')')+'</li>');
+				.append('<li><code class="i18n">'+ex23+'</code>  -->  <small><i>(browser would report a missing JS symbol)</i></small></li>');
 		}
       </script>
    </HEAD>

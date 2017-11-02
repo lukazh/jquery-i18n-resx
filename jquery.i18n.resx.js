@@ -120,13 +120,13 @@
         
         files.forEach(function (file) {
             var fileNames = [];
-            if(settings.load.indexOf('default')){
+            if(settings.load.indexOf('default') !== -1){
                 fileNames.push(settings.path + file + '.' + settings.ext);
             }
-            if(settings.load.indexOf('language')){
+            if(settings.load.indexOf('language') !== -1){
                 fileNames.push(settings.path + file + '.' + settings.language.substring(0, 2) + '.' + settings.ext);
             }
-            if(settings.load.indexOf('country') && settings.language.length >= 5){
+            if(settings.load.indexOf('country') !== -1 && settings.language.length >= 5){
                 fileNames.push(settings.path + file + '.' + settings.language.substring(0, 5) + '.' + settings.ext);
             }
             loadAndParseFiles(fileNames, settings);

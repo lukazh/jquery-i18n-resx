@@ -1,11 +1,8 @@
 /******************************************************************************
  * jQuery.i18n.resx
- *
  * Licensed under MIT (https://opensource.org/licenses/MIT)
- *
- * @version     1.0.0
+ * @version     1.0.1
  * @url         https://github.com/lukazh/jquery-i18n-resx
- *
  *****************************************************************************/
 
 (function ($) {
@@ -109,9 +106,11 @@
         // Ensure an array
         var files = (settings.name && $.isArray(settings.name)) ? settings.name : [settings.name];
 
-        // A locale is at least a language code which means at least two files per name. If
-        // we also have a country code, thats an extra file per name.
-        settings.totalFiles = (files.length * 2) + ((settings.language.length >= 5) ? files.length : 0);
+        var loadDefault = settings.load.indexOf('default') !== -1;
+        var loadLanguage = settings.load.indexOf('language') !== -1;
+        var loadCountry = settings.load.indexOf('country') !== -1 && settings.language.length >= 5;
+        
+        settings.totalFiles = files.length * (Number(loadDefault) + Number(loadLanguage) + Number(loadCountry));
         if (settings.debug) {
             log('totalFiles: ' + settings.totalFiles);
         }
@@ -120,13 +119,13 @@
         
         files.forEach(function (file) {
             var fileNames = [];
-            if(settings.load.indexOf('default') !== -1){
+            if(loadDefault){
                 fileNames.push(settings.path + file + '.' + settings.ext);
             }
-            if(settings.load.indexOf('language') !== -1){
+            if(loadLanguage){
                 fileNames.push(settings.path + file + '.' + settings.language.substring(0, 2) + '.' + settings.ext);
             }
-            if(settings.load.indexOf('country') !== -1 && settings.language.length >= 5){
+            if(loadCountry){
                 fileNames.push(settings.path + file + '.' + settings.language.substring(0, 5) + '.' + settings.ext);
             }
             loadAndParseFiles(fileNames, settings);
@@ -306,24 +305,26 @@
                 cache: settings.cache,
                 dataType: 'text',
                 success: function (data, status) {
-
                     if (settings.debug) {
                         log('Succeeded in downloading ' + filename + '.');
                         log(data);
                     }
-
                     parseData(data, settings);
-                    nextFile();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-
                     if (settings.debug) {
                         log('Failed to download or parse ' + filename + '. errorThrown: ' + errorThrown);
                     }
                     if (jqXHR.status === 404) {
                         settings.totalFiles -= 1;
                     }
-                    nextFile();
+                },
+                complete: function() {
+                    if(settings.async){
+                        callbackIfComplete(settings);
+                    } else {
+                        nextFile();
+                    }
                 }
             });
         }
